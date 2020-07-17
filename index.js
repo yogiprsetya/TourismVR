@@ -10,6 +10,8 @@ import {
   VrButton
 } from 'react-360';
 
+const surfaceModule = NativeModules.surfaceModule;
+
 class InfoPanel extends React.Component {
   state = {
     img: {
@@ -37,6 +39,14 @@ export default class TourismAppVR extends React.Component {
   render() {
     return (
       <View>
+        <Image source={asset('poland.png')} style={{width: 500, height: 300}}/>
+        <View style={styles.attractionBox}>
+          <VrButton onClick={() => surfaceModule.start()}>
+            <Text style={styles.attractionText}>
+              Welcome to BeautifulGdansk, Poland! Clik Here!
+            </Text>
+          </VrButton>
+        </View>
       </View>
     );
   }

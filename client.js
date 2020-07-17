@@ -1,9 +1,12 @@
-import {ReactInstance, Surface} from 'react-360-web';
+import {ReactInstance, Surface, Module} from 'react-360-web';
 
 function init(bundle, parent, options = {}) {
-  const r360 = new ReactInstance(bundle, parent, {
+  r360 = new ReactInstance(bundle, parent, {
     // Add custom options here
     fullScreen: true,
+    nativeModules: [
+      new surfaceModule()
+    ],
     ...options,
   });
 
@@ -62,22 +65,32 @@ function init(bundle, parent, options = {}) {
     0
   );
 
-  r360.renderToSurface(
-    r360.createRoot('InfoPanel', {}),
-    marketPanel
-  )
+    r360.compositor.setBackground(r360.getAssetURL('gdansk.jpg'));
+}
 
-  r360.renderToSurface(
-    r360.createRoot('InfoPanel', {}),
-    shoppingPanel
-  )
+class surfaceModule extends Module {
+  constructor() {
+    super('surfaceModule')
+  }
 
-  r360.renderToSurface(
-    r360.createRoot('InfoPanel', {}),
-    restaurantPanel
-  )
+  start() {
+    r360.renderToSurface(
+      r360.createRoot('InfoPanel', {}),
+      marketPanel
+    )
+  
+    r360.renderToSurface(
+      r360.createRoot('InfoPanel', {}),
+      shoppingPanel
+    )
+  
+    r360.renderToSurface(
+      r360.createRoot('InfoPanel', {}),
+      restaurantPanel
+    )
 
-  r360.compositor.setBackground(r360.getAssetURL('gdansk.jpg'));
+    r360.detachRoot(introRoot)
+  }
 }
 
 window.React360 = {init};
